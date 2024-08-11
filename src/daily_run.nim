@@ -1,7 +1,7 @@
 
-import daily_run/[syntax, compile]
+import daily_run/[syntax, compile, ctl_utils]
 
-export syntax, compile
+export syntax, compile, ctl_utils
 
 when isMainModule:
   from std/os import quoteShell
