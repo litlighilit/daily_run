@@ -46,7 +46,7 @@ macro after*(time: static float; body) =
   let tup = time.splitDecimal
   let
     hour = HourRange tup.intpart
-    minute = MinuteRange 100 * tup.floatpart
+    minute = MinuteRange toInt 100 * tup.floatpart
   newCall(
     bindSym"after",
     nnkTupleConstr.newTree(
