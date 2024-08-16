@@ -68,9 +68,5 @@ proc mainloop* =
       nowDt = now()
       nowTime: Time = (nowDt.hour, nowDt.minute)
     idx = callbacks.lowerBound(nowTime, cbCmp)
-    let le = callbacks.len
-    if le != 0 and idx == le:
-      # later than the last
-      idx.dec 1
-    for i in idx..<le:
+    for i in 0..<idx:
       callbacks[i].cb()
