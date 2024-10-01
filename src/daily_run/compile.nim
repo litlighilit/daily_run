@@ -11,10 +11,13 @@ proc compileFile*(fn: string, run: bool = false, arg: openArray[string] = []) =
   let
     res = prepare readFile fn
     tfn = genTempPath("daily_run_res", ".nim")
+  var extraArgs: string
+  when defined(windows) or defined(macosx):
+    extraArgs.add " --app:gui "
   writeFile tfn, res
   defer: removeFile tfn
   var oExe = fn.changeFileExt(ExeExt)
-  assert 0 == execShellCmd "nim c -o:" & oExe & arg.quoteShellCommand & " --hints:off " & tfn
+  assert 0 == execShellCmd "nim c -o:" & oExe & extraArgs & arg.quoteShellCommand & " --hints:off " & tfn
   if run:
     if oExe.parentDir() == "":  # is bare path
       oExe = "."/oExe
