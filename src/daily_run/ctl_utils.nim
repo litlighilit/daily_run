@@ -7,7 +7,7 @@ const MS_WINDOWS = defined(windows)
 
 when MS_WINDOWS:
   type BOOL = cint  ## typedef int BOOL;
-  proc LockWorkStation(): BOOL{.importc, header: "winuser.h".}
+  proc LockWorkStation(): BOOL{.importc, header: "<windows.h>" #["<winuser.h>"]#.}
   proc lockWorkStation: bool = bool LockWorkStation()
 proc checkLockCmdAvail: string =
   when MS_WINDOWS: " not impl"
@@ -23,18 +23,12 @@ template ifLockCmdUnavail(err; body) =
     let err = checkLockCmdAvail()
     if err.len != 0:
       body
-  
-static:
-  ifLockCmdUnavail err:
-    echo err
 
-ifLockCmdUnavail err:
-  quit err
 
 proc lockScreen*() =
   when MS_WINDOWS:
     if not lockWorkStation():
-      logging.error "failed to LockWorkStation(): " & osErrorMsg()
+      logging.error "failed to LockWorkStation(): " & osErrorMsg(osLastError())
   else:
     if 0 != execShellCmd "loginctl lock-session":
       logging.error "failed to loginctl lock-session"
