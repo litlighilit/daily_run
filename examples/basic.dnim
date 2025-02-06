@@ -1,0 +1,7 @@
+#!/usr/bin/env daily_run -r
+# optional, 1min by default
+setInterval 10.seconds
+
+after 16.36:
+  echo 2
+# after 16:36, every 10 seconds, echo 2
