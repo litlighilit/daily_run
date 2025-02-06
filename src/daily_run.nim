@@ -3,9 +3,16 @@ import daily_run/[syntax, compile, ctl_utils]
 
 export syntax, compile, ctl_utils
 
+
 when isMainModule:
-  from std/os import quoteShell
   import std/parseopt
+  from std/os import getAppFilename, quoteShell, lastPathPart
+  from std/strutils import format
+  proc echoHelp =
+    echo """
+$1 -h,--help
+$1 [-r,--run] [opts_for_nim] file
+  """.format getAppFilename().lastPathPart
   var
     run = false
     filename: string
@@ -18,6 +25,9 @@ when isMainModule:
       case key
       of "run", "r":
         run = true
+      of "help", "h":
+        echoHelp()
+        quit QuitSuccess
       else:
         args.add quoteShell(key & ':' & val)
     of cmdEnd:
