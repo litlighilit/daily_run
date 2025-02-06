@@ -63,10 +63,10 @@ proc setInterval*(t: TimeInterval) =
 proc mainloop* =
   var idx = 0
   while true:
-    sleep toMilliseconds interval
     let
       nowDt = now()
       nowTime: Time = (nowDt.hour, nowDt.minute)
     idx = callbacks.lowerBound(nowTime, cbCmp)
     for i in 0..<idx:
       callbacks[i].cb()
+    sleep toMilliseconds interval
