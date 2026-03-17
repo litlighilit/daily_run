@@ -2,6 +2,10 @@
 
 import std/os
 import std/logging
+import ./ctl_utils/[
+  hiber,
+]
+export hiber
 
 const MS_WINDOWS = defined(windows)
 
