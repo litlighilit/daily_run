@@ -17,7 +17,8 @@ proc compileFile*(fn: string, run: bool = false, arg: openArray[string] = []) =
   writeFile tfn, res
   defer: removeFile tfn
   var oExe = fn.changeFileExt(ExeExt)
-  assert 0 == execShellCmd "nim c -o:" & oExe & extraArgs & arg.quoteShellCommand & " --hints:off " & tfn
+  let ret = execShellCmd "nim c -o:" & oExe & extraArgs & arg.quoteShellCommand & " --hints:off -d:release " & tfn
+  assert ret == 0
   if run:
     if oExe.parentDir() == "":  # is bare path
       oExe = "."/oExe
